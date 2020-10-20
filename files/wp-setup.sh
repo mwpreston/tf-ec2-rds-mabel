@@ -9,7 +9,7 @@ sudo apt-get install php5-mysqlnd-ms -y
 sudo apt-get install php-gd php-mysql libapache2-mod-php -y
 sudo service apache2 restart
 sleep 20
-cat <<EOT >> ~/.my.cnf
+sudo cat <<EOT >> ~/.my.cnf
 [mysqldump]
 host = ${db_hostname}
 port = 3306
@@ -22,9 +22,9 @@ port = 3306
 user = ${db_user}
 password = ${db_password}
 EOT
-chmod 600 ~/.my.cnf
-mkdir /home/ubuntu/git
-git clone git clone https://github.com/mwpreston/tf-ec2-rds-mabel.git /home/ubuntu/git
+sudo chmod 600 ~/.my.cnf
+sudo mkdir /home/ubuntu/git
+sudo git clone https://github.com/mwpreston/tf-ec2-rds-mabel.git /home/ubuntu/git
 mysql {$db_name} < /home/ubuntu/git/files/mabel.sql
 sudo mkdir -p /var/www/html/
 sudo tar -xzvf /home/ubuntu/git/files/wordpress.tar.gz -C /var/www/html/
