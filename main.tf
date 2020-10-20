@@ -13,7 +13,7 @@ data "aws_security_group" "sg" {
 data "template_file" "userdata" {
 
     depends_on = [
-        aws_db_instance.db,
+        aws_db_instance.db
     ]
     template = "${file("files/wp-setup.sh")}"
     vars = {
@@ -21,6 +21,7 @@ data "template_file" "userdata" {
         db_user     = local.rds-user
         db_password     = local.rds-pass
         db_name     = local.rds-database-name
+
     }
 }
 

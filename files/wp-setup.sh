@@ -17,9 +17,10 @@ sudo sed -i 's/localhost/${db_hostname}/g' /home/ubuntu/.my.cnf
 sudo sed -i 's/username_here/${db_user}/g' /home/ubuntu/.my.cnf
 sudo sed -i 's/password_here/${db_password}/g' /home/ubuntu/.my.cnf
 sudo chown ubuntu.ubuntu /home/ubuntu/.my.cnf
-sudo chmod 600 ~/.my.cnf
+sudo chmod 600 /home/ubuntu/.my.cnf
 sudo mkdir /home/ubuntu/git
 sudo git clone https://github.com/mwpreston/tf-ec2-rds-mabel.git /home/ubuntu/git
+sudo sed -i -r 's/(\b[0-9]{1,3}\.){3}[0-9]{1,3}\b'/"$(hostname -I)"/ /home/ubuntu/git/files/mabel.sql
 mysql {$db_name} < /home/ubuntu/git/files/mabel.sql
 sudo mkdir -p /var/www/html/
 sudo tar -xzvf /home/ubuntu/git/files/wordpress.tar.gz -C /var/www/html/
@@ -29,4 +30,5 @@ sudo sed -i 's/username_here/${db_user}/g' /var/www/html/wp-config.php
 sudo sed -i 's/password_here/${db_password}/g' /var/www/html/wp-config.php
 sudo chown -R www-data:www-data /var/www/html/
 sudo chmod -R 755 /var/www/html/
+sudo rm -fr /var/www/html/index.html
 sudo service apache2 restart
