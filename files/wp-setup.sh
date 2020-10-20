@@ -8,20 +8,15 @@ sudo apt-get install php5 libapache2-mod-php5 php5-mcrypt php5-curl php5-gd php5
 sudo apt-get install php5-mysqlnd-ms -y
 sudo apt-get install php-gd php-mysql libapache2-mod-php -y
 sudo service apache2 restart
-sleep 20
-sudo cat <<EOT >> ~/.my.cnf
-[mysqldump]
-host = ${db_hostname}
-port = 3306
-user = ${db_user}
-password = ${db_password}
-
-[mysql]
-host = ${db_hostname}
-port = 3306
-user = ${db_user}
-password = ${db_password}
-EOT
+sudo echo "[mysql]" > /home/ubuntu/.my.cnf
+sudo echo "host = localhost" >> /home/ubuntu/.my.cnf
+sudo echo "port = 3306" >> /home/ubuntu/.my.cnf
+sudo echo "user = username_here" >> /home/ubuntu/.my.cnf
+sudo echo "password = password_here" >> /home/ubuntu/.my.cnf
+sudo sed -i 's/localhost/${db_hostname}/g' /home/ubuntu/.my.cnf
+sudo sed -i 's/username_here/${db_user}/g' /home/ubuntu/.my.cnf
+sudo sed -i 's/password_here/${db_password}/g' /home/ubuntu/.my.cnf
+sudo chown ubuntu.ubuntu /home/ubuntu/.my.cnf
 sudo chmod 600 ~/.my.cnf
 sudo mkdir /home/ubuntu/git
 sudo git clone https://github.com/mwpreston/tf-ec2-rds-mabel.git /home/ubuntu/git
