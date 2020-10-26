@@ -21,9 +21,12 @@ data "template_file" "userdata" {
 resource "aws_db_subnet_group" "dbs" {
   name    = local.dbsg-name
   subnet_ids = local.dbsg-ids
-    tags = {
-      Name = local.dbsg-name
-  }
+    tags = merge(
+      local.tags,
+      {
+        Name = local.dbsg-name
+      }
+    )
 }
 resource "aws_db_instance" "db" {
     depends_on = [
@@ -41,7 +44,7 @@ resource "aws_db_instance" "db" {
     parameter_group_name    = "default.mysql5.7"
     db_subnet_group_name    = aws_db_subnet_group.dbs.name
     vpc_security_group_ids  = [local.security-group-id]
-    tags                    = local.rds-tags
+    tags                    = local.tags
 }
 
 resource "aws_instance" "ec2" {
@@ -58,5 +61,27 @@ resource "aws_instance" "ec2" {
 
   user_data = data.template_file.userdata.rendered
 
-  tags = local.ec2-tags
+  tags = merge(
+    local.tags,
+    {
+      Name = local.ec2-name
+    }
+  )
+}
+
+resource "aws_instance" "ec2-dvm" {
+  count = local.ec2-count
+  ami           = local.ami-id
+  instance_type = "t2.micro"
+
+  key_name                    = local.keypair-name
+  vpc_security_group_ids      = [local.security-group-id]
+  subnet_id                   = data.aws_subnet.subnet.id
+
+  tags = merge(
+    local.tags,
+    {
+      Name = "Mabel-Web-${count.index}"
+    }
+  )
 }

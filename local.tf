@@ -1,18 +1,13 @@
 ﻿locals {
   #EC2 Info
+  ec2-name              = "MabelOutlet-Web-Base"
   ami-id                = "ami-038e35de01603d84e"
   instance-type         = "t2.micro"
   keypair-name          = "nova-mp-kp"
   security-group-id     = "sg-0e86d78907c7c5f24"
   subnet-name           = "nova-vpc-test-private-01-use1"
-  ec2-tags              = {
-      owner         = "mwpreston"
-      environment   = "dev"
-      usecase       = "mabel-outlet-rds-ec2"
-      createdby     = "terraform"
-      Name          = "MabelOutlet-Web"
-  }
-  rds-tags          = {
+  ec2-count             = "6"
+  tags              = {
       owner         = "mwpreston"
       environment   = "dev"
       usecase       = "mabel-outlet-rds-ec2"
