@@ -3,6 +3,6 @@
   description = "DNS Endpoint of the instance"
 }
 output "file_contents" {
-  value       = "${data.template_file.userdata.rendered}"
+  value       = data.template_file.userdata.rendered
   description = "Template file"
 }
